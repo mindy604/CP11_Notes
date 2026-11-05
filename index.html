@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="description" content="An interactive Computer Programming 11 notebook. Explore Python examples, check your understanding, and keep your own notes.">
+  <title>CP11 · The Python Notebook</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="topics.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" href="#home" aria-label="CP11 notebook home"><span class="brand-mark">py<span>_</span></span><span>CP11<span class="brand-sub">THE PYTHON NOTEBOOK</span></span></a>
+    <div class="course-label">YOUR LEARNING SPACE</div>
+    <nav aria-label="Notebook"><a id="home-link" class="nav-home" href="#home"><span aria-hidden="true">⌂</span> Overview</a><div class="nav-label">CORE TOPICS</div><div id="core-nav"></div><div class="nav-label extra-label">A LITTLE EXTRA</div><div id="extra-nav"></div></nav>
+    <div class="sidebar-bottom"><span class="small-tag">LEARN BY DOING</span><p>Read a little.<br>Try something.<br>Make it yours.</p><span class="sidebar-caption">Computer Programming 11</span></div>
+  </aside>
+  <div class="page">
+    <header class="topbar"><span class="breadcrumb">CP11 <span>/</span> <span id="crumb">Overview</span></span><button class="button quiet small" id="export-notes">↓ Export my notes</button></header>
+    <main id="main" tabindex="-1"></main>
+    <footer><span>CP11 · A notebook that grows with you.</span><a href="https://github.com/mindy604/CP11_Notes" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a></footer>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

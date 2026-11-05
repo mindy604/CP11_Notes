@@ -98,8 +98,9 @@
   function route(focus = false) {
     const id = location.hash.slice(1) || 'home';
     const topic = topics.find(t => t.id === id);
-    navigation(topic ? topic.id : 'home');
-    if (topic) lesson(topic); else home();
+    navigation(id === 'loops' || id.startsWith('loops/') ? 'loops' : topic ? topic.id : 'home');
+    const loopPage = window.CP11_LOOPS && window.CP11_LOOPS.render(id, { lesson, download });
+    if (!loopPage) { if (topic) lesson(topic); else home(); }
     window.scrollTo(0, 0);
     if (focus) $('#main').focus({ preventScroll: true });
   }
@@ -108,6 +109,7 @@
     for (const t of topics) {
       output += `${t.number} · ${t.title}\nStatus: ${done(t.id) ? 'Reviewed' : 'Still learning'}\n${state.notes[t.id] || '(No notes yet)'}\n\n`;
     }
+    if (window.CP11_LOOPS) output += '\n' + window.CP11_LOOPS.exportText();
     download('my-cp11-notes.txt', output);
     toast('Your notebook has been exported.');
   });

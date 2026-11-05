@@ -40,7 +40,9 @@ Edit `topics.js`. Each object in `window.CP11_TOPICS` defines a topic:
 - `#loops/notes01` — the original loop introduction, preserving existing personal notes.
 - `#loops/notes02`, `#loops/notes03`, `#loops/notes04` — clearly marked spaces for future teacher-posted notes.
 - `#loops/work01` — Guess My Number: choose a range, explain difficulty, choose unlimited or limited chances, choose whether out-of-range whole numbers use a chance, edit messages, and try a browser preview. A fixed-secret testing mode makes boundary tests repeatable. Students then build their own Python game; the site does not generate a complete project solution.
-- `#loops/work02` — test and explain the saved Python game, using suggested tests adapted to the saved rules, expected/actual results, repair/retest records, and student explanations.
+- `#loops/work01/test` — Work 01, Part 02: test and explain the saved Python game, using suggested tests adapted to the saved rules, expected/actual results, repair/retest records, and student explanations.
+
+- `#loops/work02` — a placeholder for a different game, clearly marked pending.
 
 `loops.js` contains the Loops page structure and guidance. `game-engine.js` models the preview rules. The preview uses JavaScript; it does not run or assess uploaded Python code. The site does not accept code uploads. Text, blank, and decimal guesses are rejected by the browser safeguard without using a chance. Python work may assume whole-number input; extra text handling is not required by this guide. The preview supports number limits from -1,000,000 to 1,000,000 and 1–100 chances; these are browser-tool bounds, not course requirements.
 

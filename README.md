@@ -52,6 +52,26 @@ For a developer with Node.js, run `node game-engine.test.cjs` to verify feedback
 
 The page renders content as text rather than accepting HTML in lesson fields. Layout is in `index.html` and `styles.css`; interactions are in `app.js`.
 
+## Review: for, while, and AND/OR with while loops
+
+Open `#loops/review` from the **Review** card on the Loops choices page. The three parts are:
+
+1. **Review 1 — For loop:** range start/stop/step, zero turns, and repeated versus final output.
+2. **Review 2 — While loop:** start/check/update, print/update order, zero turns, and stopping.
+3. **Review 3 — AND/OR with while loops:** complete comparisons, truth combinations, numeric retry conditions, and stopping on success or an attempt limit.
+
+Each part has two concept checks, two expected-output boxes, a drag-and-drop block puzzle with its target output visible, and a similar coding problem after each activity. Blocks also have Move up/Move down buttons. There are nine small coding tasks in total. This standalone website review does not assign or replace any dated classroom lesson, document or test.
+
+**Run & check executes real Python**, using Pyodide 314.0.8 in a module Web Worker. The first run loads its runtime from `https://cdn.jsdelivr.net/pyodide/v314.0.8/full/`; school network access to that host is needed. Student code and responses are evaluated locally, not submitted to a grading server. The runner checks output, supplied input consumption, and the requested loop/Boolean construct, rather than requiring one exact source-code answer. Passing these examples is feedback on the stated tests, not a complete assessment of understanding.
+
+`review-data.js` contains the original questions, expected outputs and test cases. `review.js` handles the page, checks, ordering and saved work. `review-worker.js` loads Python. `review-checker.py` provides fresh namespaces for each test, bounded output and a 10,000-step trace guard. The page can stop/terminate the worker, enforces a six-second execution timeout, and reports runtime-loading failures. Imports, break, continue, pass and literal `while True` are excluded from these basic review tasks. `review.css` contains the review layout.
+
+The editor's Run button supplies the listed inputs automatically. Prompt text in `input()` is omitted from output comparisons. Printed line order and text matter; trailing whitespace is ignored. Inputs must all be consumed, which catches an extra prompt or an early stop. Students may save a coding attempt as `.py`.
+
+Review drafts, predictions, choices and block orders use the separate browser-local key `cp11-loop-review-v1`. **Download my review work** exports them as text; the main **Export my notes** includes them too. Check results are recalculated when students run/check again. Browser-local storage has the same shared-profile and clearing limitations described below.
+
+Python runtime reference: https://pyodide.org/en/stable/usage/webworker.html
+
 ## Student notes and progress
 
 Notes and reviewed-topic markers are stored only in the current browser's local storage. There are no student accounts or server submissions. Shared browser profiles share the same notes; clearing browser data removes them. Students should use **Export my notes** to keep a text copy. The exported file is a readable backup; there is no import feature yet. If browser storage is unavailable, the page tells students to export before leaving.

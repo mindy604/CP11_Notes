@@ -96,11 +96,13 @@
     });
   }
   function route(focus = false) {
+    if (window.CP11_REVIEW) window.CP11_REVIEW.dispose();
     const id = location.hash.slice(1) || 'home';
     const topic = topics.find(t => t.id === id);
     navigation(id === 'loops' || id.startsWith('loops/') ? 'loops' : topic ? topic.id : 'home');
-    const loopPage = window.CP11_LOOPS && window.CP11_LOOPS.render(id, { lesson, download });
-    if (!loopPage) { if (topic) lesson(topic); else home(); }
+    const reviewPage = window.CP11_REVIEW && window.CP11_REVIEW.render(id, { download });
+    const loopPage = !reviewPage && window.CP11_LOOPS && window.CP11_LOOPS.render(id, { lesson, download });
+    if (!loopPage && !reviewPage) { if (topic) lesson(topic); else home(); }
     window.scrollTo(0, 0);
     if (focus) $('#main').focus({ preventScroll: true });
   }
@@ -110,6 +112,7 @@
       output += `${t.number} · ${t.title}\nStatus: ${done(t.id) ? 'Reviewed' : 'Still learning'}\n${state.notes[t.id] || '(No notes yet)'}\n\n`;
     }
     if (window.CP11_LOOPS) output += '\n' + window.CP11_LOOPS.exportText();
+    if (window.CP11_REVIEW) output += '\n' + window.CP11_REVIEW.exportText();
     download('my-cp11-notes.txt', output);
     toast('Your notebook has been exported.');
   });

@@ -12,7 +12,7 @@ A small, expandable interactive notebook for Computer Programming 11.
 6. Extra 01 — Turtle drawing
 7. Extra 02 — Pygame
 
-The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops opens a choice page for notes and guided homework. Functions opens a lesson choice page with **01 — Functions**. This is a starting collection, not a full course or replacement for daily assignments.
+The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops opens a choice page for notes and guided homework. Functions opens a lesson choice page with **01 — Functions** and **02 — Functions**. This is a starting collection, not a full course or replacement for daily assignments.
 
 ## Preview
 
@@ -84,11 +84,23 @@ Fixed tasks compare against the displayed target output. Open-ended event/challe
 
 Drafts, predictions and block order are saved under `cp11-functions-01-v1`. Students can save individual `.py` files or download all lesson work as text. The global **Export my notes** includes this work. There is no server submission or import feature.
 
+## Functions: 02 — Functions (one parameter)
+
+Open `#functions/02` from **04 Functions**. This lesson uses only the current Day 45 student file, teacher playbook and its challenge guidance: passing one changing value into a function, parameter versus argument, and printed output with no explicit return. No Day 46–58 material is included.
+
+The four sections match 01: Learn & predict, Guide & reuse, Build & test, and Challenges. Models use greet(name) and show_points(points). Students predict outputs, repair a quoted parameter, arrange and run code blocks, then try a similar seat-label problem. Independent work retains Club Member Welcome (three names including a repeated-name test), cups × 236.6 to mL (1, 2, 0.5), three temperature messages (9, 10, 11), and the three-member score report (9, 10, 11). The ten original 4/4/2 challenge briefs remain choices, not a quota. Full independent/challenge teacher solutions are not supplied.
+
+`functions02-data.js` supplies Day 45 content and test cases. `functions02.js` uses the established Functions layout and interactions. `functions02-worker.js` and `functions02-checker.py` run Python separately from 01. The checker verifies one-parameter definitions, parameter use, real call arguments, outputs and supplied input consumption. Numeric tasks accept different clear labels while checking per-call values, units and the stated boundary messages. Challenge outputs compare against student-written test plans and selected structure checks; students still review the full brief and explain their design, formatting and tests. A supporting no-parameter display function is allowed for the fitness connection task.
+
+Code, predictions, explanations and block order save separately under `cp11-functions-02-v1`. Individual `.py` downloads and lesson text exports are available; the global note export includes 02. Python loading requires internet access to the same pinned jsDelivr Pyodide runtime used by 01; student work is not sent to a grading server.
+
+Content sources are the current `Day45_name_one_parameter.py`, `Functions/Day45_Teacher_Playbook.md`, and `Functions_Challenge_Answers_Day45.md` (teacher reference for behavior only). Classroom sources, daily downloads, the student ZIP, 01 lesson behavior, and Loop Review are unchanged.
+
 ## Student notes and progress
 
 Notes and reviewed-topic markers are stored only in the current browser's local storage. There are no student accounts or server submissions. Shared browser profiles share the same notes; clearing browser data removes them. Students should use **Export my notes** to keep a text copy. The exported file is a readable backup; there is no import feature yet. If browser storage is unavailable, the page tells students to export before leaving.
 
-The introductory topic examples download as `.py` files for a Python editor. Loop Review and 01 Functions also run their supported Python exercises in the browser. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
+The introductory topic examples download as `.py` files for a Python editor. Loop Review and Functions 01/02 also run their supported Python exercises in the browser. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
 
 ## Publish on GitHub Pages
 

@@ -99,10 +99,12 @@
     if (window.CP11_REVIEW) window.CP11_REVIEW.dispose();
     if (window.CP11_FUNCTIONS) window.CP11_FUNCTIONS.dispose();
     if (window.CP11_FUNCTIONS02) window.CP11_FUNCTIONS02.dispose();
+    if (window.CP11_FUNCTIONS03) window.CP11_FUNCTIONS03.dispose();
+    if (window.CP11_FUNCTIONS04) window.CP11_FUNCTIONS04.dispose();
     const id = location.hash.slice(1) || 'home';
     const topic = topics.find(t => t.id === id);
     navigation(id.startsWith('functions') ? 'functions' : id === 'loops' || id.startsWith('loops/') ? 'loops' : topic ? topic.id : 'home');
-    const functionsPage = (window.CP11_FUNCTIONS02 && window.CP11_FUNCTIONS02.render(id, { download })) || (window.CP11_FUNCTIONS && window.CP11_FUNCTIONS.render(id, { download }));
+    const functionsPage = (window.CP11_FUNCTIONS04 && window.CP11_FUNCTIONS04.render(id, { download })) || (window.CP11_FUNCTIONS03 && window.CP11_FUNCTIONS03.render(id, { download })) || (window.CP11_FUNCTIONS02 && window.CP11_FUNCTIONS02.render(id, { download })) || (window.CP11_FUNCTIONS && window.CP11_FUNCTIONS.render(id, { download }));
     const reviewPage = !functionsPage && window.CP11_REVIEW && window.CP11_REVIEW.render(id, { download });
     const loopPage = !functionsPage && !reviewPage && window.CP11_LOOPS && window.CP11_LOOPS.render(id, { lesson, download });
     if (!functionsPage && !loopPage && !reviewPage) { if (topic) lesson(topic); else home(); }
@@ -118,6 +120,8 @@
     if (window.CP11_REVIEW) output += '\n' + window.CP11_REVIEW.exportText();
     if (window.CP11_FUNCTIONS) output += '\n' + window.CP11_FUNCTIONS.exportText();
     if (window.CP11_FUNCTIONS02) output += '\n' + window.CP11_FUNCTIONS02.exportText();
+    if (window.CP11_FUNCTIONS03) output += '\n' + window.CP11_FUNCTIONS03.exportText();
+    if (window.CP11_FUNCTIONS04) output += '\n' + window.CP11_FUNCTIONS04.exportText();
     download('my-cp11-notes.txt', output);
     toast('Your notebook has been exported.');
   });

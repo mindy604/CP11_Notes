@@ -12,7 +12,7 @@ A small, expandable interactive notebook for Computer Programming 11.
 6. Extra 01 — Turtle drawing
 7. Extra 02 — Pygame
 
-The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops opens a choice page for notes and guided homework. Functions opens a lesson choice page with **01 — Functions** and **02 — Functions**. This is a starting collection, not a full course or replacement for daily assignments.
+The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops opens a choice page for notes and guided homework. Functions opens a lesson choice page with **01 — Functions**, **02 — Functions**, **03 — Functions** and **04 — Functions**. This is a starting collection, not a full course or replacement for daily assignments.
 
 ## Preview
 
@@ -96,11 +96,24 @@ Code, predictions, explanations and block order save separately under `cp11-func
 
 Content sources are the current `Day45_name_one_parameter.py`, `Functions/Day45_Teacher_Playbook.md`, and `Functions_Challenge_Answers_Day45.md` (teacher reference for behavior only). Classroom sources, daily downloads, the student ZIP, 01 lesson behavior, and Loop Review are unchanged.
 
+## Functions: 03 and 04
+
+- `#functions/03` — **03 — Functions**, using current Day 46 material only: two positional parameters, argument order, bake-sale totals, rectangle areas and shipping labels. Students reuse one bake-sale editor for two/four orders and one rectangle editor for areas/labels. The existing function can be checked with swapped arguments without replacing the saved main program. Ten Day 46 challenge choices are included.
+- `#functions/04` — **04 — Functions**, using current Day 47 material only: return versus print, None, storing and reusing results, the original add/mult prediction, triangle material area, rectangle returns and the 20% discount task. The triangle editor continues into a two-triangle report and changed-height test. Ten Day 47 challenge choices are included.
+
+Both lessons reuse the established Functions styles, four sections, predictions, Check me, editable Python, ordering controls, downloads and browser-local saving. Full independent/challenge teacher solutions are not included. Each has its own `functions03/04-data.js`, `.js`, `-worker.js` and `-checker.py`. The original 01/02 and Loop Review runners are unchanged.
+
+03 checks real argument pairs, calculation results and labelled roles, including money formatting. 04 checks returned values, caller-side storage/reuse, required units and discount subtraction; print-only functions cannot substitute for required returned calculations. Fixed tasks check the stated targets. Challenge tests compare student-planned outputs and selected structural requirements; these are learning checks, not complete assessments of every requirement or explanation.
+
+Work is saved separately under `cp11-functions-03-v1` and `cp11-functions-04-v1`. Individual Python downloads and lesson text exports are available, and the global export includes both lessons. The first Run loads the same pinned Pyodide runtime from jsDelivr. Student code stays in the browser.
+
+Content comes from the current Day46_name_two_parameters.py and Day47_name_return_value.py student files and their matching playbooks/challenge guidance. Classroom source files and schedules are unchanged. Local preview copies remain separate from the published site.
+
 ## Student notes and progress
 
 Notes and reviewed-topic markers are stored only in the current browser's local storage. There are no student accounts or server submissions. Shared browser profiles share the same notes; clearing browser data removes them. Students should use **Export my notes** to keep a text copy. The exported file is a readable backup; there is no import feature yet. If browser storage is unavailable, the page tells students to export before leaving.
 
-The introductory topic examples download as `.py` files for a Python editor. Loop Review and Functions 01/02 also run their supported Python exercises in the browser. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
+The introductory topic examples download as `.py` files for a Python editor. Loop Review and Functions 01–04 also run their supported Python exercises in the browser. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
 
 ## Publish on GitHub Pages
 

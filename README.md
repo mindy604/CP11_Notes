@@ -12,7 +12,7 @@ A small, expandable interactive notebook for Computer Programming 11.
 6. Extra 01 — Turtle drawing
 7. Extra 02 — Pygame
 
-The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops now opens a choice page for notes and guided homework. This is a starting collection, not a full course or replacement for daily assignments.
+The main topics begin with short introductory notes, Python examples, self-checks, activities, and personal note spaces. Loops opens a choice page for notes and guided homework. Functions opens a lesson choice page with **01 — Functions**. This is a starting collection, not a full course or replacement for daily assignments.
 
 ## Preview
 
@@ -72,11 +72,23 @@ Review drafts, predictions, choices and block orders use the separate browser-lo
 
 Python runtime reference: https://pyodide.org/en/stable/usage/webworker.html
 
+## Functions: 01 — Functions
+
+Open `#functions` and choose **01 — Functions**, or use `#functions/01` directly. The lesson covers the current first-functions (Day 44) teaching material only; later lessons are not included and course files/schedules are unchanged.
+
+Four sections provide Learn & predict, Guide & reuse, Build & test, and Challenges. Students distinguish defining from calling, predict printed output, arrange and run border code, try similar problems, build Reusable Club Heading, and grow one event program through rules/welcome/closing stages. The 10 primary challenges and 10 further reuse choices retain their student briefs; teacher independent/challenge solutions are not published.
+
+`functions-data.js` contains challenge briefs; `functions.js` contains the lesson and browser interactions. `functions-worker.js` loads the same pinned Pyodide runtime as Loop Review, and `functions-checker.py` checks real Python with fresh state for each test, bounded output, call counts, no-parameter definitions and selected task requirements. The worker can be stopped and has the same loading and execution timeouts. It does not change the Loop Review runner.
+
+Fixed tasks compare against the displayed target output. Open-ended event/challenge tasks compare against student-planned expected outputs and selected function requirements; they do not certify every scenario requirement or explanation. Students must review the full brief and choose useful tests. Input prompts are omitted from output comparisons. First use needs internet access to jsDelivr. Code and responses stay in the browser.
+
+Drafts, predictions and block order are saved under `cp11-functions-01-v1`. Students can save individual `.py` files or download all lesson work as text. The global **Export my notes** includes this work. There is no server submission or import feature.
+
 ## Student notes and progress
 
 Notes and reviewed-topic markers are stored only in the current browser's local storage. There are no student accounts or server submissions. Shared browser profiles share the same notes; clearing browser data removes them. Students should use **Export my notes** to keep a text copy. The exported file is a readable backup; there is no import feature yet. If browser storage is unavailable, the page tells students to export before leaving.
 
-Python examples download as `.py` files and run in a Python editor, not on this website. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
+The introductory topic examples download as `.py` files for a Python editor. Loop Review and 01 Functions also run their supported Python exercises in the browser. Turtle needs a graphics-capable Python environment. Pygame needs a desktop environment with the Pygame package installed.
 
 ## Publish on GitHub Pages
 

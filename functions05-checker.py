@@ -205,7 +205,7 @@ def _cp11_check(payload_json):
         matched = not compared or actual == str(expected).replace('\r\n', '\n').rstrip()
         for name, wanted in case.get('returnValues', {}).items():
             actual_returns = returned_values.get(name, [])
-            if len(actual_returns) != len(wanted) or any((type(value) is not bool or value is not expected) if isinstance(expected, bool) else (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isclose(value, expected, rel_tol=1e-8, abs_tol=1e-8)) for value, expected in zip(actual_returns, wanted)):
+            if len(actual_returns) != len(wanted) or any((type(value) is not bool or value is not expected) if isinstance(expected, bool) else (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isclose(value, expected, rel_tol=1e-9, abs_tol=0.0)) for value, expected in zip(actual_returns, wanted)):
                 checks.append(f'Check what {name}() returns for each supplied value. Expected: {wanted}; actual: {actual_returns}.')
         for name in requirements.get('quietReturns', []):
             if any(text for text in function_outputs.get(name, [])):
@@ -215,10 +215,12 @@ def _cp11_check(payload_json):
                 checks.append(f'{name}() returned None on this test. Check that the required calculation is returned on that path.')
         semantic = case.get('semantic')
         if semantic and not error_message:
-            number_pattern = r'[-+]?\d+(?:\.\d+)?'
+            number_pattern = r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?'
             values = semantic.get('values', [])
-            equal = lambda a, b: math.isclose(float(a), float(b), rel_tol=1e-8, abs_tol=1e-8)
+            equal = lambda a, b: math.isclose(float(a), float(b), rel_tol=1e-9, abs_tol=0.0)
             if semantic['kind'] == 'testRows':
+                if any(not equal(a, b) for a, b in zip(semantic['expected'], semantic.get('independentExpected', semantic['expected']))):
+                    checks.append('Recalculate your independent predictions from the metre-to-centimetre rule. Keep predictions separate from actual results.')
                 rows = [line for line in actual.splitlines() if 'expected' in line.lower() and 'actual' in line.lower()]
                 matched = len(rows) == len(semantic['arguments'])
                 if matched:
@@ -227,7 +229,7 @@ def _cp11_check(payload_json):
                         expected_match = re.search(r'\bexpected\s*[:=]?\s*(' + number_pattern + r')\s*cm\b', row, re.I)
                         actual_match = re.search(r'\bactual\s*[:=]?\s*(' + number_pattern + r')\s*cm\b', row, re.I)
                         flags = re.findall(r'\b(PASS|FAIL)\b', row)
-                        if not first or not expected_match or not actual_match or not equal(first.group(1), argument) or not equal(expected_match.group(1), expected_value) or not equal(actual_match.group(1), actual_value) or flags != [status]:
+                        if not first or not expected_match or not actual_match or not equal(first.group(1), argument) or not equal(expected_match.group(1), expected_value) or not equal(actual_match.group(1), actual_value) or (flags != [status] and not (status == 'PASS' and flags == ['FAIL'] and actual_value != expected_value and equal(actual_value, expected_value))):
                             matched = False
                 if not matched:
                     checks.append('Check each labelled Input / Expected / Actual row, its m and cm units, and its PASS or FAIL result. Keep the expected values unchanged in the faulty copy.')

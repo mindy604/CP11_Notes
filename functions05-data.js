@@ -126,7 +126,7 @@ window.CP11_FUNCTIONS05_DATA = {
     },
     "guide": {
       "title": "Compare the conversion results",
-      "goal": "Run the starter and compare its results with 32 and 212. Then add a call with -40 and choose the three-test version below. Its expected result is -40; Python displays -40.0.",
+      "goal": "Run the starter and compare its results with 32 and 212. Then add a call with -40 and choose the three-test version below. Its expected result is -40; Python displays -40.0. Here, -40 is a valid special case, not a minimum accepted temperature.",
       "starter": "def celsius_to_fahrenheit(celsius):\n    return celsius * 9 / 5 + 32\n\nprint(celsius_to_fahrenheit(0))\nprint(celsius_to_fahrenheit(100))",
       "variant": true,
       "requires": {
@@ -194,7 +194,7 @@ window.CP11_FUNCTIONS05_DATA = {
           "add_tax"
         ]
       },
-      "reflection": "Why did the original version store None even though it displayed a number?",
+      "reflection": "Why did the original version store None even though it displayed a number? Is this a syntax, runtime or logic problem? Explain your choice.",
       "cases": [
         {
           "name": "The test receives the returned value",
@@ -217,7 +217,7 @@ window.CP11_FUNCTIONS05_DATA = {
     },
     "boolean": {
       "title": "Test Boolean functions",
-      "goal": "Write is_even(i) with if/else so it returns True or False. Test 4 and 7. Write div_by(n, d) for positive integers and test (10, 3) and (195, 13). Print the actual results in that order, or print labelled expected/actual rows. Record the expected and actual result of every case in your notes below.",
+      "goal": "Write is_even(i) with if/else so it returns True or False. Test 4 and 7. Write div_by(n, d) for positive integers and test (10, 3) and (195, 13). Print the actual results in that order, or print labelled expected/actual rows. Record the expected and actual result of every case in your notes below. Both parameters of div_by must be positive integers. A zero divisor is outside this contract: identify it as invalid in your notes, without calling it or inventing a False result.",
       "starter": "# Purpose: return whether a positive integer is even\n# Parameters: i, a positive integer. Returns: True or False.\n\n# Write div_by(n, d) below, with its own purpose/parameters/return comments.\n",
       "requires": {
         "names": [
@@ -298,14 +298,14 @@ window.CP11_FUNCTIONS05_DATA = {
     "converter": {
       "title": "Check a metre-to-centimetre converter",
       "starter": "# Purpose: convert metres to centimetres\n# Parameters: metres, a number. Returns: centimetres.\n\n# Add your test calls and expected/actual comparisons below.\n",
-      "default": "three",
-      "note": "Use fixed test values; you do not need input(). Keep this as your working version. The extended tests also include -1 metre.",
+      "default": "five",
+      "note": "Use the same five planned inputs in every run. All numeric inputs, including negative values, are allowed. Use fixed calls; input() is not needed.",
       "stages": [
         {
-          "id": "three",
-          "label": "1. Three conversion tests",
-          "goal": "Write metres_to_centimetres(metres) so it returns the conversion. Test 0, 1 and 2.5 metres against 0, 100 and 250 centimetres. For each test, compare the actual return value with the expected value and display a labelled input/expected/actual row with PASS or FAIL. You may repeat the comparison for each test or put it in a helper function.",
-          "reflection": "What did each test show? Why must the function return a number rather than only print it?",
+          "id": "five",
+          "label": "1. Correct converter · all five tests",
+          "goal": "Write metres_to_centimetres(metres) to return metres × 100. Use all five rows of your plan, in order. Compare each returned result with your independent prediction and print Input, Expected, Actual, m/cm units and PASS or FAIL. You may repeat the comparison or write a helper function.",
+          "reflection": "What does each test check? Does your chosen input add different evidence or repeat another case? Explain why more tests are not automatically better, and why this function must return its result.",
           "requires": {
             "names": [
               "metres_to_centimetres"
@@ -314,7 +314,7 @@ window.CP11_FUNCTIONS05_DATA = {
               "metres_to_centimetres": 1
             },
             "calls": {
-              "metres_to_centimetres": 3
+              "metres_to_centimetres": 5
             },
             "returnFunctions": [
               "metres_to_centimetres"
@@ -324,152 +324,21 @@ window.CP11_FUNCTIONS05_DATA = {
             ],
             "comparesReturned": "metres_to_centimetres"
           },
-          "cases": [
-            {
-              "name": "Three known inputs",
-              "expected": "Input: 0 m | Expected: 0 cm | Actual: 0 cm | PASS\nInput: 1 m | Expected: 100 cm | Actual: 100 cm | PASS\nInput: 2.5 m | Expected: 250 cm | Actual: 250 cm | PASS",
-              "inputs": [],
-              "callArguments": {
-                "metres_to_centimetres": [
-                  [
-                    0
-                  ],
-                  [
-                    1
-                  ],
-                  [
-                    2.5
-                  ]
-                ]
-              },
-              "returnValues": {
-                "metres_to_centimetres": [
-                  0,
-                  100,
-                  250.0
-                ]
-              },
-              "semantic": {
-                "kind": "testRows",
-                "arguments": [
-                  0,
-                  1,
-                  2.5
-                ],
-                "expected": [
-                  0,
-                  100,
-                  250.0
-                ],
-                "actual": [
-                  0,
-                  100,
-                  250.0
-                ],
-                "status": [
-                  "PASS",
-                  "PASS",
-                  "PASS"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "id": "four",
-          "label": "2. Extend to four tests",
-          "goal": "Keep your converter and its existing tests. Add -1 metre, whose expected result is -100 centimetres. Run the four tests in the order -1, 0, 1 and 2.5. Record each expected and actual result once, then use the separate scratch editor below for the deliberate fault.",
-          "reflection": "Record the four expected/actual results. Which non-zero tests could reveal a wrong multiplier?",
-          "requires": {
-            "names": [
-              "metres_to_centimetres"
-            ],
-            "arities": {
-              "metres_to_centimetres": 1
-            },
-            "calls": {
-              "metres_to_centimetres": 4
-            },
-            "returnFunctions": [
-              "metres_to_centimetres"
-            ],
-            "quietReturns": [
-              "metres_to_centimetres"
-            ],
-            "comparesReturned": "metres_to_centimetres"
-          },
-          "cases": [
-            {
-              "name": "Four tests, including a negative value",
-              "expected": "Input: -1 m | Expected: -100 cm | Actual: -100 cm | PASS\nInput: 0 m | Expected: 0 cm | Actual: 0 cm | PASS\nInput: 1 m | Expected: 100 cm | Actual: 100 cm | PASS\nInput: 2.5 m | Expected: 250 cm | Actual: 250 cm | PASS",
-              "inputs": [],
-              "callArguments": {
-                "metres_to_centimetres": [
-                  [
-                    -1
-                  ],
-                  [
-                    0
-                  ],
-                  [
-                    1
-                  ],
-                  [
-                    2.5
-                  ]
-                ]
-              },
-              "returnValues": {
-                "metres_to_centimetres": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ]
-              },
-              "semantic": {
-                "kind": "testRows",
-                "arguments": [
-                  -1,
-                  0,
-                  1,
-                  2.5
-                ],
-                "expected": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ],
-                "actual": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ],
-                "status": [
-                  "PASS",
-                  "PASS",
-                  "PASS",
-                  "PASS"
-                ]
-              }
-            }
-          ]
+          "cases": []
         }
       ]
     },
     "scratch": {
       "title": "Scratch copy: find and repair the fault",
-      "starter": "# Copy your four-test converter program here.\n# Keep the working version in the editor above.\n# Change its multiplier to 10 for the fault test.\n",
+      "starter": "# Copy your five-test converter program here.\n# Keep the working version in the editor above.\n# Change its multiplier to 10 for the fault test.\n",
       "default": "broken",
-      "note": "This is a separate scratch copy. Editing it does not change the working converter above. Keep the expected values the same in both versions.",
+      "note": "Copy your working five-test program into this separate editor. Keep the original converter above. Keep every input and prediction unchanged.",
       "stages": [
         {
           "id": "broken",
-          "label": "1. Faulty multiplier: 10",
-          "goal": "Copy your four-test program into this editor. Change only the converter’s multiplier from 100 to 10. Before running, predict which test will still pass. Run the same expectations (-100, 0, 100, 250) and identify the cases that reveal the fault. FAIL rows are the expected outcome of this experiment.",
-          "reflection": "Which tests caught the fault? Why did the zero test still pass?",
+          "label": "2. Broken scratch copy · multiplier 10",
+          "goal": "Change only the converter’s multiplier from 100 to 10. Predict which rows will still pass, then run all five tests. A FAIL is useful evidence here: it shows a test caught the fault.",
+          "reflection": "Which tests exposed the wrong multiplier? Why does a zero test miss it? Keep your five inputs and predictions unchanged.",
           "requires": {
             "names": [
               "metres_to_centimetres"
@@ -478,7 +347,7 @@ window.CP11_FUNCTIONS05_DATA = {
               "metres_to_centimetres": 1
             },
             "calls": {
-              "metres_to_centimetres": 4
+              "metres_to_centimetres": 5
             },
             "returnFunctions": [
               "metres_to_centimetres"
@@ -488,71 +357,13 @@ window.CP11_FUNCTIONS05_DATA = {
             ],
             "comparesReturned": "metres_to_centimetres"
           },
-          "cases": [
-            {
-              "name": "The faulty copy should expose three failures",
-              "expected": "Input: -1 m | Expected: -100 cm | Actual: -10 cm | FAIL\nInput: 0 m | Expected: 0 cm | Actual: 0 cm | PASS\nInput: 1 m | Expected: 100 cm | Actual: 10 cm | FAIL\nInput: 2.5 m | Expected: 250 cm | Actual: 25 cm | FAIL",
-              "inputs": [],
-              "callArguments": {
-                "metres_to_centimetres": [
-                  [
-                    -1
-                  ],
-                  [
-                    0
-                  ],
-                  [
-                    1
-                  ],
-                  [
-                    2.5
-                  ]
-                ]
-              },
-              "returnValues": {
-                "metres_to_centimetres": [
-                  -10,
-                  0,
-                  10,
-                  25.0
-                ]
-              },
-              "semantic": {
-                "kind": "testRows",
-                "arguments": [
-                  -1,
-                  0,
-                  1,
-                  2.5
-                ],
-                "expected": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ],
-                "actual": [
-                  -10,
-                  0,
-                  10,
-                  25.0
-                ],
-                "status": [
-                  "FAIL",
-                  "PASS",
-                  "FAIL",
-                  "FAIL"
-                ]
-              },
-              "successMessage": "Your tests found the expected fault: zero passes, while the three non-zero cases fail. Restore 100 in this scratch copy and check all four again."
-            }
-          ]
+          "cases": []
         },
         {
           "id": "restored",
-          "label": "2. Restore the multiplier: 100",
-          "goal": "Change the multiplier in this scratch copy back to 100. Keep the same four inputs and expectations, then rerun them. All four should now report PASS. Explain what the repair changed and describe the function’s comments and returned value.",
-          "reflection": "Compare the faulty and repaired results. Why would testing only zero have been insufficient?",
+          "label": "3. Repaired scratch copy · multiplier 100",
+          "goal": "Restore the multiplier to 100 and rerun the same five tests. Compare the repaired results with your original expectations. This checks that the repair has preserved earlier correct behaviour.",
+          "reflection": "Explain what you repaired, what the five retests showed, and what the function returns. Why could a passing zero test alone not prove the conversion was correct?",
           "requires": {
             "names": [
               "metres_to_centimetres"
@@ -561,7 +372,7 @@ window.CP11_FUNCTIONS05_DATA = {
               "metres_to_centimetres": 1
             },
             "calls": {
-              "metres_to_centimetres": 4
+              "metres_to_centimetres": 5
             },
             "returnFunctions": [
               "metres_to_centimetres"
@@ -571,64 +382,7 @@ window.CP11_FUNCTIONS05_DATA = {
             ],
             "comparesReturned": "metres_to_centimetres"
           },
-          "cases": [
-            {
-              "name": "The repaired copy should pass all four",
-              "expected": "Input: -1 m | Expected: -100 cm | Actual: -100 cm | PASS\nInput: 0 m | Expected: 0 cm | Actual: 0 cm | PASS\nInput: 1 m | Expected: 100 cm | Actual: 100 cm | PASS\nInput: 2.5 m | Expected: 250 cm | Actual: 250 cm | PASS",
-              "inputs": [],
-              "callArguments": {
-                "metres_to_centimetres": [
-                  [
-                    -1
-                  ],
-                  [
-                    0
-                  ],
-                  [
-                    1
-                  ],
-                  [
-                    2.5
-                  ]
-                ]
-              },
-              "returnValues": {
-                "metres_to_centimetres": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ]
-              },
-              "semantic": {
-                "kind": "testRows",
-                "arguments": [
-                  -1,
-                  0,
-                  1,
-                  2.5
-                ],
-                "expected": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ],
-                "actual": [
-                  -100,
-                  0,
-                  100,
-                  250.0
-                ],
-                "status": [
-                  "PASS",
-                  "PASS",
-                  "PASS",
-                  "PASS"
-                ]
-              }
-            }
-          ]
+          "cases": []
         }
       ]
     }

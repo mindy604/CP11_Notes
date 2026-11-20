@@ -4,3 +4,12 @@
 @media(max-width:650px){.fn-hero{grid-template-columns:1fr;gap:18px}.fn-hero-note{transform:none}.fn-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.fn-task,.fn-predict{padding:18px}.fn-test-grid{grid-template-columns:1fr;gap:4px}.fn-anatomy pre{font-size:12px}.fn-challenge-label{font-size:10px}.fn-challenge-body{padding:0 16px 18px}.fn-section>h2{font-size:27px}#fn-blocks code{font-size:10px}#fn-blocks .code-block{gap:5px;padding:12px 7px}}
 
 #fn-blocks .block-grip{touch-action:none;cursor:grab;padding:8px 4px}#fn-blocks .dragging{background:#e4edd9;opacity:.65}
+
+/* Functions 05: keep all three runs beside the same five planned cases. */
+.fn-five-plan-table { min-width: 1000px; width: 100%; table-layout: fixed; }
+.fn-five-plan-table td { vertical-align: top; }
+.fn-five-plan-table textarea { width: 100%; min-width: 0; box-sizing: border-box; }
+.fn-five-plan-table textarea[readonly] { background: var(--paper, #f5f7fa); }
+.fn-five-plan-table caption { text-align: left; padding: .75rem 0; }
+
+.fn-five-plan-table th, .fn-five-plan-table td, .fn-five-plan-table textarea { font-size: 14px; }

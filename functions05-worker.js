@@ -3,7 +3,7 @@ import { loadPyodide } from 'https://cdn.jsdelivr.net/pyodide/v314.0.8/full/pyod
 const ready = (async () => {
   const [python, response] = await Promise.all([
     loadPyodide({indexURL:'https://cdn.jsdelivr.net/pyodide/v314.0.8/full/'}),
-    fetch(new URL('functions05-checker.py?v=20261119-tests', import.meta.url))
+    fetch(new URL('functions05-checker.py?v=20261120-classroom-fix', import.meta.url))
   ]);
   if (!response.ok) throw new Error('The Python checker could not be loaded. Refresh the page and try again.');
   await python.runPythonAsync(await response.text());

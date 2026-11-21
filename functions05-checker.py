@@ -64,7 +64,7 @@ def _cp11_check(payload_json):
             notes.append(f'Use the required if/else in {name}() and return True or False.')
     parent = {id(child): node for node in ast.walk(tree) for child in ast.iter_child_nodes(node)}
     required_returns = requirements.get('returnFunctions', []) or (list(returning) if requirements.get('returningAtLeast') else [])
-    for name in required_returns:
+    for name in ([] if requirements.get('functionOnly') else required_returns):
         if not any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == name and not isinstance(parent.get(id(n)), ast.Expr) for n in caller_nodes(name)):
             notes.append(f'Use the value returned by {name}() in the caller. A call on its own does not display or store the result.')
     assignments = [n for n in main_nodes if isinstance(n, ast.Assign)]
@@ -92,7 +92,28 @@ def _cp11_check(payload_json):
             if uses_actual and independent:
                 valid_comparison = True
         if not valid_comparison:
-            notes.append('Compare the actual returned value with an independently expected value. Printing PASS without a comparison is not a test.')
+            notes.append('Your test needs a real comparison. Set expected to your independent prediction, store the function call in actual, then use if actual == expected to choose PASS or FAIL. See the one-test walkthrough above the editor.')
+
+    if requirements.get('comparesReturned'):
+        target = requirements['comparesReturned']
+        wrong_expected = False
+        literal_pass = False
+        for joined in (n for n in ast.walk(tree) if isinstance(n, ast.JoinedStr)):
+            label = ''
+            for part in joined.values:
+                if isinstance(part, ast.Constant) and isinstance(part.value, str):
+                    labels = re.findall(r'\b(expected|actual)\s*[:=]', part.value, re.I)
+                    if labels:
+                        label = labels[-1].lower()
+                    literal_pass = literal_pass or bool(re.search(r'\bPASS\b', part.value))
+                elif isinstance(part, ast.FormattedValue) and label == 'expected':
+                    if any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == target for n in ast.walk(part.value)):
+                        wrong_expected = True
+        if wrong_expected:
+            notes.insert(0, 'The function call is under Expected. Move its returned value to Actual. Expected must be a number you worked out independently; for 1 m, use 100 cm.')
+        if literal_pass and not valid_comparison:
+            notes.append('PASS is typed into your output. A label does not test the result: let if/else choose PASS or FAIL from the expected/actual comparison.')
+
     for name, minimum in requirements.get('printStoredCopies', {}).items():
         prints = [n for n in main_nodes if isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == 'print' and any(isinstance(child, ast.Name) and isinstance(child.ctx, ast.Load) and child.id in stored.get(name, set()) for child in ast.walk(n))]
         if len(prints) < minimum:
@@ -197,14 +218,34 @@ def _cp11_check(payload_json):
                     checks.append(f'Each call to {name}() should print {count} lines.')
         if not error_message:
             for name, wanted in case.get('callArguments', {}).items():
-                if argument_values.get(name, []) != wanted:
-                    checks.append(f'Pass each supplied value to {name}() in order. Expected arguments: {wanted}; actual: {argument_values.get(name, [])}.')
+                seen_arguments = argument_values.get(name, [])
+                remaining_arguments = list(wanted)
+                if case.get('orderIndependent'):
+                    arguments_match = len(seen_arguments) == len(wanted)
+                    for argument in seen_arguments:
+                        if argument in remaining_arguments:
+                            remaining_arguments.remove(argument)
+                        else:
+                            arguments_match = False
+                else:
+                    arguments_match = seen_arguments == wanted
+                if not arguments_match:
+                    order_note = '' if case.get('orderIndependent') else ' in order'
+                    checks.append(f'Call {name}() with each planned input{order_note}. Planned arguments: {wanted}; actual: {seen_arguments}. Keep a repeated input if it appears twice in your plan.')
         actual = output.getvalue().replace('\r\n', '\n').rstrip()
         expected = case.get('expected')
         compared = expected is not None
         matched = not compared or actual == str(expected).replace('\r\n', '\n').rstrip()
         for name, wanted in case.get('returnValues', {}).items():
             actual_returns = returned_values.get(name, [])
+            if case.get('orderIndependent'):
+                remaining = list(zip(case.get('callArguments', {}).get(name, []), wanted))
+                ordered = []
+                for argument in argument_values.get(name, []):
+                    match = next((i for i, pair in enumerate(remaining) if pair[0] == argument), None)
+                    if match is not None:
+                        ordered.append(remaining.pop(match)[1])
+                wanted = ordered
             if len(actual_returns) != len(wanted) or any((type(value) is not bool or value is not expected) if isinstance(expected, bool) else (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isclose(value, expected, rel_tol=1e-9, abs_tol=0.0)) for value, expected in zip(actual_returns, wanted)):
                 checks.append(f'Check what {name}() returns for each supplied value. Expected: {wanted}; actual: {actual_returns}.')
         for name in requirements.get('quietReturns', []):
@@ -221,18 +262,43 @@ def _cp11_check(payload_json):
             if semantic['kind'] == 'testRows':
                 if any(not equal(a, b) for a, b in zip(semantic['expected'], semantic.get('independentExpected', semantic['expected']))):
                     checks.append('Recalculate your independent predictions from the metre-to-centimetre rule. Keep predictions separate from actual results.')
-                rows = [line for line in actual.splitlines() if 'expected' in line.lower() and 'actual' in line.lower()]
+                # Read labelled tests across one or several lines, without fixing spacing or case.
+                rows = re.split(r'(?=\binput\s*[:=])', actual, flags=re.I)
+                rows = [row for row in rows if re.match(r'\s*input\s*[:=]', row, re.I)]
                 matched = len(rows) == len(semantic['arguments'])
-                if matched:
-                    for row, argument, expected_value, actual_value, status in zip(rows, semantic['arguments'], semantic['expected'], semantic['actual'], semantic['status']):
-                        first = re.search(r'\binput\s*[:=]?\s*(' + number_pattern + r')\s*m\b', row, re.I)
-                        expected_match = re.search(r'\bexpected\s*[:=]?\s*(' + number_pattern + r')\s*cm\b', row, re.I)
-                        actual_match = re.search(r'\bactual\s*[:=]?\s*(' + number_pattern + r')\s*cm\b', row, re.I)
-                        flags = re.findall(r'\b(PASS|FAIL)\b', row)
-                        if not first or not expected_match or not actual_match or not equal(first.group(1), argument) or not equal(expected_match.group(1), expected_value) or not equal(actual_match.group(1), actual_value) or (flags != [status] and not (status == 'PASS' and flags == ['FAIL'] and actual_value != expected_value and equal(actual_value, expected_value))):
+                row_notes = []
+                unused = list(range(len(semantic['arguments'])))
+                for index, row in enumerate(rows):
+                    row_input = re.search(r'\binput\s*[:=]?\s*(' + number_pattern + r')', row, re.I)
+                    selected = index
+                    if case.get('orderIndependent') and row_input:
+                        selected = next((j for j in unused if equal(row_input.group(1), semantic['arguments'][j])), -1)
+                        if selected < 0:
                             matched = False
+                            row_notes.append('This output includes an input that is not in the remaining planned cases. Keep all five planned cases, including any repeated input.')
+                            continue
+                        unused.remove(selected)
+                    if selected >= len(semantic['arguments']):
+                        matched = False
+                        continue
+                    argument, expected_value, actual_value, status = (semantic[key][selected] for key in ('arguments', 'expected', 'actual', 'status'))
+                    first = re.search(r'\binput\s*[:=]?\s*(' + number_pattern + r')\s*(?:m|metres?|meters?)\b', row, re.I)
+                    expected_match = re.search(r'\bexpected\s*[:=]?\s*(' + number_pattern + r')\s*(?:cm|centimetres?|centimeters?)\b', row, re.I)
+                    actual_match = re.search(r'\bactual\s*[:=]?\s*(' + number_pattern + r')\s*(?:cm|centimetres?|centimeters?)\b', row, re.I)
+                    flags = re.findall(r'\b(PASS|FAIL)\b', row, re.I)
+                    flags = [flag.upper() for flag in flags]
+                    flag_ok = flags == [status] or (status == 'PASS' and flags == ['FAIL'] and actual_value != expected_value and equal(actual_value, expected_value))
+                    if not first or not expected_match or not actual_match or not equal(first.group(1), argument) or not equal(expected_match.group(1), expected_value) or not equal(actual_match.group(1), actual_value) or not flag_ok:
+                        matched = False
+                    if actual_match and not equal(actual_match.group(1), actual_value):
+                        row_notes.append(f'Test {index + 1} ({argument} m): Actual is printed as {actual_match.group(1)} cm. The function should return {actual_value} cm here. Display the returned value, not a fixed number.')
+                    if expected_match and not equal(expected_match.group(1), expected_value):
+                        row_notes.append(f'Test {index + 1} ({argument} m): the independently expected result is {expected_value} cm. Keep this expectation unchanged in the broken copy.')
                 if not matched:
-                    checks.append('Check each labelled Input / Expected / Actual row, its m and cm units, and its PASS or FAIL result. Keep the expected values unchanged in the faulty copy.')
+                    if len(rows) != len(semantic['arguments']):
+                        row_notes.insert(0, f'This step needs {len(semantic["arguments"])} labelled test(s); your output contains {len(rows)}. Choose the one-test or five-case step to match the program you are working on.')
+                    checks.extend(row_notes[:3])
+                    checks.append('For each test, label Input in m and Expected/Actual in cm, then display the PASS or FAIL chosen by your comparison. Labels may be on one line or separate lines.')
             elif semantic['kind'] == 'booleanRows':
                 lines = [line.strip() for line in actual.splitlines() if line.strip()]
                 matched = len(lines) == len(values)

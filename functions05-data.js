@@ -297,14 +297,39 @@ window.CP11_FUNCTIONS05_DATA = {
   "projects": {
     "converter": {
       "title": "Check a metre-to-centimetre converter",
-      "starter": "# Purpose: convert metres to centimetres\n# Parameters: metres, a number. Returns: centimetres.\n\n# Add your test calls and expected/actual comparisons below.\n",
-      "default": "five",
-      "note": "Use the same five planned inputs in every run. All numeric inputs, including negative values, are allowed. Use fixed calls; input() is not needed.",
+      "starter": "# Purpose: convert metres to centimetres\n# Parameter: metres, a number. Returns: centimetres.\n\n# 1. Write your function here.\n\n# 2. Build one test for 1 metre. See the worked test above.\n",
+      "default": "one",
+      "note": "Get one complete test working first. Then use the five-case step. Changing the step keeps your code.",
       "stages": [
         {
+          "id": "one",
+          "label": "1. Get one complete test working",
+          "goal": "Start with 1 metre and an independently expected result of 100 centimetres. Store the function’s return in actual, compare actual with expected, and let if/else choose PASS or FAIL. Use the worked test above to see how the pieces fit together.",
+          "reflection": "Which value did you predict before the call? Which value came back from the function? How does the comparison choose PASS or FAIL?",
+          "requires": {
+            "names": [
+              "metres_to_centimetres"
+            ],
+            "arities": {
+              "metres_to_centimetres": 1
+            },
+            "calls": {
+              "metres_to_centimetres": 1
+            },
+            "returnFunctions": [
+              "metres_to_centimetres"
+            ],
+            "quietReturns": [
+              "metres_to_centimetres"
+            ],
+            "comparesReturned": "metres_to_centimetres"
+          },
+          "cases": []
+        },
+        {
           "id": "five",
-          "label": "1. Correct converter · all five tests",
-          "goal": "Write metres_to_centimetres(metres) to return metres × 100. Use all five rows of your plan, in order. Compare each returned result with your independent prediction and print Input, Expected, Actual, m/cm units and PASS or FAIL. You may repeat the comparison or write a helper function.",
+          "label": "2. Extend the working test to all five cases",
+          "goal": "Keep the same testing pattern and extend it to 0, 1, 2.5, -1 and your chosen input. For each case, write the expected value independently, store the actual return, and compare them. Print labelled Input, Expected and Actual values with PASS or FAIL. You can use one line or several lines for each test. The five tests can run in any order.",
           "reflection": "What does each test check? Does your chosen input add different evidence or repeat another case? Explain why more tests are not automatically better, and why this function must return its result.",
           "requires": {
             "names": [

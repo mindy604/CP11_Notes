@@ -13,3 +13,8 @@
 .fn-five-plan-table caption { text-align: left; padding: .75rem 0; }
 
 .fn-five-plan-table th, .fn-five-plan-table td, .fn-five-plan-table textarea { font-size: 14px; }
+
+/* Keep the four Boolean predictions and returns readable beside their calls. */
+.fn-boolean-table { min-width: 500px; table-layout: fixed; }
+.fn-boolean-table th, .fn-boolean-table td, .fn-boolean-table textarea { font-size: 14px; }
+.fn-boolean-table textarea { min-height: 3.25rem; }

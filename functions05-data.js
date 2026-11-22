@@ -217,8 +217,8 @@ window.CP11_FUNCTIONS05_DATA = {
     },
     "boolean": {
       "title": "Test Boolean functions",
-      "goal": "Write is_even(i) with if/else so it returns True or False. Test 4 and 7. Write div_by(n, d) for positive integers and test (10, 3) and (195, 13). Print the actual results in that order, or print labelled expected/actual rows. Record the expected and actual result of every case in your notes below. Both parameters of div_by must be positive integers. A zero divisor is outside this contract: identify it as invalid in your notes, without calling it or inventing a False result.",
-      "starter": "# Purpose: return whether a positive integer is even\n# Parameters: i, a positive integer. Returns: True or False.\n\n# Write div_by(n, d) below, with its own purpose/parameters/return comments.\n",
+      "goal": "Build and check is_even first. Keep it in the same editor while you add div_by. Then run the complete program and record all four returned Boolean values.",
+      "starter": "# Write is_even(i) first. Add purpose, parameter and return comments.\n# Use if/else to return the Boolean value True or False.\n\n# Add these test calls below your function:\n# print(is_even(4))\n# print(is_even(7))\n\n# After step 1 works, keep it and add div_by(n, d) in this editor.\n",
       "requires": {
         "names": [
           "is_even",
@@ -245,7 +245,7 @@ window.CP11_FUNCTIONS05_DATA = {
         ]
       },
       "flexible": true,
-      "reflection": "Record expected and actual results for 4, 7, (10, 3) and (195, 13). Explain one comparison.",
+      "reflection": "Compare your four predictions with the returned values. Explain what i % 2 or n % d tells your function, and why the function returns True or False without quotation marks.",
       "cases": [
         {
           "name": "Four Boolean results",
@@ -290,6 +290,36 @@ window.CP11_FUNCTIONS05_DATA = {
               true
             ]
           }
+        }
+      ],
+      "stages": [
+        {
+          "id": "even",
+          "label": "1. Check is_even on its own",
+          "goal": "Write is_even(i). Use if/else: return True when the remainder i % 2 is zero; otherwise return False. Add print calls for 4 and 7 below the function. Run this step to check the function’s returned values. You do not need div_by yet.",
+          "functions": [
+            "is_even"
+          ],
+          "success": "is_even returns the correct Boolean values for 4 and 7. Keep this code and choose step 2 to add div_by."
+        },
+        {
+          "id": "div",
+          "label": "2. Add and check div_by",
+          "goal": "Keep your is_even function and its calls. Below them, write div_by(n, d) for positive integers. Use n % d to decide whether n can be divided by d with no remainder, and return True or False. Add print calls for (10, 3) and (195, 13). This step checks div_by by itself, so the earlier is_even calls can stay.",
+          "functions": [
+            "div_by"
+          ],
+          "success": "div_by returns the correct Boolean values for both positive-integer cases. Keep both functions and choose step 3 to run your complete program."
+        },
+        {
+          "id": "both",
+          "label": "3. Run both functions and all four calls",
+          "goal": "Run the complete program in this editor. Keep both function definitions and put the four print calls in the order shown below. Check the printed results against your predictions, then explain one test.",
+          "functions": [
+            "is_even",
+            "div_by"
+          ],
+          "success": "Both functions return Boolean values and your complete program displays the four required results. Review your predictions and explain one test."
         }
       ]
     }
@@ -361,8 +391,8 @@ window.CP11_FUNCTIONS05_DATA = {
       "stages": [
         {
           "id": "broken",
-          "label": "2. Broken scratch copy · multiplier 10",
-          "goal": "Change only the converter’s multiplier from 100 to 10. Predict which rows will still pass, then run all five tests. A FAIL is useful evidence here: it shows a test caught the fault.",
+          "label": "1. Broken scratch copy · multiplier 10",
+          "goal": "In this scratch editor only, change the converter’s multiplier from 100 to 10. Keep all five test inputs, predicted results and comparisons unchanged. Choose the broken step, run, and compare the FAIL rows with your prediction. The page confirms success when your tests expose this deliberate fault.",
           "reflection": "Which tests exposed the wrong multiplier? Why does a zero test miss it? Keep your five inputs and predictions unchanged.",
           "requires": {
             "names": [
@@ -386,8 +416,8 @@ window.CP11_FUNCTIONS05_DATA = {
         },
         {
           "id": "restored",
-          "label": "3. Repaired scratch copy · multiplier 100",
-          "goal": "Restore the multiplier to 100 and rerun the same five tests. Compare the repaired results with your original expectations. This checks that the repair has preserved earlier correct behaviour.",
+          "label": "2. Repaired scratch copy · multiplier 100",
+          "goal": "In the same scratch editor, restore the converter’s multiplier from 10 to 100. Keep all five inputs and predictions unchanged. Choose the repaired step and run again. Compare the repaired results with the broken results in your existing test plan.",
           "reflection": "Explain what you repaired, what the five retests showed, and what the function returns. Why could a passing zero test alone not prove the conversion was correct?",
           "requires": {
             "names": [

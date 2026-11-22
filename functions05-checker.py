@@ -248,6 +248,8 @@ def _cp11_check(payload_json):
                 wanted = ordered
             if len(actual_returns) != len(wanted) or any((type(value) is not bool or value is not expected) if isinstance(expected, bool) else (isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isclose(value, expected, rel_tol=1e-9, abs_tol=0.0)) for value, expected in zip(actual_returns, wanted)):
                 checks.append(f'Check what {name}() returns for each supplied value. Expected: {wanted}; actual: {actual_returns}.')
+                if any(isinstance(v, bool) for v in wanted):
+                    checks.append(f'{name}() must return the Boolean values True or False, without quotation marks. Printing inside the function, returning text, or returning 0/1 does not supply the required Boolean result.')
         for name in requirements.get('quietReturns', []):
             if any(text for text in function_outputs.get(name, [])):
                 checks.append(f'Let {name}() return the result. Display it in the main program instead of printing inside this calculation function.')
@@ -300,19 +302,26 @@ def _cp11_check(payload_json):
                     checks.extend(row_notes[:3])
                     checks.append('For each test, label Input in m and Expected/Actual in cm, then display the PASS or FAIL chosen by your comparison. Labels may be on one line or separate lines.')
             elif semantic['kind'] == 'booleanRows':
+                # Accept bare returns, simple labels, or Expected/Actual labels on one or several lines.
                 lines = [line.strip() for line in actual.splitlines() if line.strip()]
-                matched = len(lines) == len(values)
-                if matched:
-                    for line, wanted in zip(lines, values):
-                        word = 'True' if wanted else 'False'
-                        if line == word:
-                            continue
-                        expected_match = re.search(r'\bexpected\s*[:=]?\s*(True|False)\b', line, re.I)
-                        actual_match = re.search(r'\bactual\s*[:=]?\s*(True|False)\b', line, re.I)
-                        if not expected_match or not actual_match or expected_match.group(1).lower() != word.lower() or actual_match.group(1).lower() != word.lower():
-                            matched = False
+                expected_words = []
+                actual_words = []
+                unlabelled = []
+                for line in lines:
+                    expected_match = re.search(r'\bexpected\s*[:=]?\s*(True|False)\b', line, re.I)
+                    actual_match = re.search(r'\bactual\s*[:=]?\s*(True|False)\b', line, re.I)
+                    if expected_match:
+                        expected_words.append(expected_match.group(1).lower())
+                    if actual_match:
+                        actual_words.append(actual_match.group(1).lower())
+                    if not expected_match and not actual_match:
+                        word = re.search(r'\b(True|False)\b\s*$', line, re.I)
+                        if word:
+                            unlabelled.append(word.group(1).lower())
+                words = ['true' if v else 'false' for v in values]
+                matched = (actual_words == words and (not expected_words or expected_words == words) and not unlabelled) or (not expected_words and not actual_words and unlabelled == words)
                 if not matched:
-                    checks.append('Record the four Boolean results in order: True, False, False, True. Return Boolean values, not the strings "True" and "False".')
+                    checks.append('For the final step, display the four returns in this order: is_even(4), is_even(7), div_by(10, 3), div_by(195, 13). Use four values, simple labels, or Expected/Actual labels. Keep your predictions independent of the function calls.')
             elif semantic['kind'] == 'triangle':
                 lines = [line for line in actual.splitlines() if 'square units' in line.lower()]
                 matched = len(lines) == 2 * len(values)

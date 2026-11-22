@@ -13,8 +13,8 @@ import traceback
 def _cp11_check(payload_json):
     payload = json.loads(payload_json)
     code = payload.get('code', '')
-    if len(code) > 16000:
-        return json.dumps({'error': 'Keep this practice program under 16,000 characters.'})
+    if len(code) > 60000:
+        return json.dumps({'error': 'Keep this practice program under 60,000 characters.'})
     try:
         tree = ast.parse(code, filename='<student>')
     except SyntaxError as error:
@@ -34,7 +34,7 @@ def _cp11_check(payload_json):
         arguments = definition.args
         count = len(arguments.posonlyargs + arguments.args)
         wanted = requirements.get('arities', {}).get(definition.name)
-        if (wanted is not None and count != wanted) or count > 2 or arguments.vararg or arguments.kwarg or arguments.kwonlyargs or arguments.defaults:
+        if (wanted is not None and count != wanted) or count > 3 or arguments.vararg or arguments.kwarg or arguments.kwonlyargs or arguments.defaults:
             notes.append(f'Check the parameters of {definition.name}(). Use the number specified in the task.')
     returning = {d.name for d in definitions if any(isinstance(n, ast.Return) and n.value is not None for n in ast.walk(d))}
     for name in requirements.get('returnFunctions', []):
@@ -380,8 +380,6 @@ def _cp11_check(payload_json):
     except SyntaxError:
         return _cp11_base_check(payload_json)
     component = payload.get('requires', {}).get('componentName')
-    if component and (len(tree.body) != 1 or not isinstance(tree.body[0], ast.FunctionDef) or tree.body[0].name != component):
-        return json.dumps({'error': f'Put only the {component} function definition in this code box. Write direct test calls in the separate test-call box below.'})
     definitions = {n.name: n for n in tree.body if isinstance(n, ast.FunctionDef)}
     contracts = payload.get('requires', {}).get('contracts', [])
     names = [item['name'] for item in contracts]
@@ -396,14 +394,13 @@ def _cp11_check(payload_json):
             notes.append(f'Keep input and print outside {name}(). This tool receives parameters and returns a value.')
         if not any(isinstance(n, ast.Return) and n.value is not None for n in nodes):
             notes.append(f'{name}() needs to return its result.')
-        if name in ('sum_between', 'factorial', 'is_prime'):
+        for banned in item.get('avoid', []):
+            if any(isinstance(n, ast.Call) and isinstance(n.func, ast.Name) and n.func.id == banned for n in nodes):
+                notes.append(f'Use comparisons and a working value in {name}() rather than {banned}().')
+        if name in ('sum_between', 'sum_odds_between', 'count_even_between', 'count_factors', 'factorial', 'is_prime', 'hcf', 'lcm'):
             loops = [n for n in nodes if isinstance(n, (ast.For, ast.While))]
             if not loops:
                 notes.append(f'Use the taught loop inside {name}().')
-            if any(isinstance(child, ast.Return) for loop in loops for child in ast.walk(loop)):
-                notes.append(f'Return the final result after the loop in {name}(), so every required value can be checked.')
-        if name == 'is_prime' and not any(isinstance(n, ast.Assign) and isinstance(n.value, ast.Constant) and type(n.value.value) is bool for n in nodes):
-            notes.append('Use a local Boolean flag in is_prime(). A found factor must leave that flag False.')
     results = []
     if mode == 'tools':
         for item in contracts:
@@ -475,8 +472,8 @@ def _cp11_check(payload_json):
                     lower = line.lower()
                     kind = item['kind']
                     if kind == 'number':
-                        numbers = re.findall(r'[-+]?\d+(?:\.\d+)?', line)
-                        okay = item['label'].lower() in lower and bool(numbers) and math.isclose(float(numbers[-1]), item['value'], rel_tol=1e-8, abs_tol=1e-8)
+                        numbers = re.findall(r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?', line)
+                        okay = bool(numbers) and any(c.isalpha() for c in re.sub(r'[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?', '', line)) and math.isclose(float(numbers[-1]), item['value'], rel_tol=1e-9, abs_tol=0.0)
                     elif kind in ('even', 'odd'):
                         okay = bool(re.search(r'\b' + kind + r'\b', lower)) and not bool(re.search(r'\b' + ('even' if kind == 'odd' else 'odd') + r'\b', lower))
                     elif kind == 'prime':
@@ -487,15 +484,17 @@ def _cp11_check(payload_json):
                         okay = bool(re.search(r'negative|zero|>=|at least|invalid|must|cannot', lower)) and bool(re.search(r'factorial|integer|number|input', lower))
                     elif kind == 'range':
                         okay = bool(re.search(r'start|end|range|first|second', lower)) and bool(re.search(r'must|invalid|cannot|at most|revers|greater|less|<=|order', lower))
+                    elif kind == 'domain':
+                        okay = bool(line.strip()) and any(c.isalpha() for c in line)
                     elif kind == 'invalid':
-                        okay = 'invalid choice' in lower
+                        okay = bool(re.search(r'\binvalid\b', lower)) and bool(re.search(r'\b(choice|option|selection)\b', lower))
                     else:
                         okay = bool(re.search(r'\bgoodbye\b', lower))
                     matched = matched and okay
             if case.get('ownOutput'):
                 matched = actual.replace('\r\n', '\n').rstrip() == case['expected'].replace('\r\n', '\n').rstrip()
             if not matched:
-                row['checks'].append('Compare the result/message order with the expected session. Use friendly even/odd and prime/not-prime sentences, labelled calculations, and a clear domain-error message. Repeated menu lines and input prompts are omitted here.')
+                row['checks'].append('Compare the result/message order with the expected session. Use a labelled numeric result, a prime/not-prime sentence for is_prime, and a clear message for rejected input. Your labels can use your own words. Repeated menu lines and input prompts are omitted here.')
             row['passed'] = row['passed'] and matched and not row['checks']
             results.append(row)
     return json.dumps({'results': results, 'passed': bool(results) and all(row['passed'] for row in results)})

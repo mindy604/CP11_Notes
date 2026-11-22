@@ -18,3 +18,5 @@
 .fn-boolean-table { min-width: 500px; table-layout: fixed; }
 .fn-boolean-table th, .fn-boolean-table td, .fn-boolean-table textarea { font-size: 14px; }
 .fn-boolean-table textarea { min-height: 3.25rem; }
+
+.fn-work-bank{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 26px}.fn-work-choice{align-items:flex-start;padding:14px;line-height:1.65;font-size:14px}.fn-work01-editor{min-height:32rem;font-size:14px;line-height:1.65;tab-size:4}@media(max-width:760px){.fn-work-bank{grid-template-columns:1fr}}
